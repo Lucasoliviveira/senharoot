@@ -44,17 +44,18 @@ else
     exit 1
 fi
 
-# Solicita senha do root
+# Solicita senha do root (visível e com confirmação)
 echo ""
-read -s -p $'\033[1;32mDigite a nova senha para o usuário ROOT: \033[0m' senha
+read -p $'\033[1;32mDigite a nova senha para o usuário ROOT: \033[0m' senha1
+read -p $'\033[1;32mConfirme a nova senha: \033[0m' senha2
 echo ""
-if [[ -z "$senha" ]]; then
-    echo -e "\033[1;31m[ERRO] Senha inválida. Operação cancelada.\033[0m"
+if [[ -z "$senha1" || "$senha1" != "$senha2" ]]; then
+    echo -e "\033[1;31m[ERRO] Senhas não coincidem ou são inválidas. Operação cancelada.\033[0m"
     exit 1
 fi
 
 # Aplica a senha
-echo "root:$senha" | chpasswd && echo -e "\033[1;32m[OK] Senha definida com sucesso!\033[0m" || {
+echo "root:$senha1" | chpasswd && echo -e "\033[1;32m[OK] Senha definida com sucesso!\033[0m" || {
     echo -e "\033[1;31m[ERRO] Falha ao definir senha para root.\033[0m"
     exit 1
 }
